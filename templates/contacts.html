@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ super() }}
+{% endblock title %}
+
+{% block content %}
+{{ super() }}
+
+
+<form action="/contacts" method="post" class="form-contacts">
+  <p>Имя: <input type="text" name="userame" required></p>
+  <p>Email: <input type="email" name="email" required></p>
+  <p>Сообщение: </p>
+  <p><textarea> name="message" cols="30" rows="10" </textarea></p>
+  <p><input type="submit" value="Отправить сообщение"></p>
+</form>
+
+{% endblock content %}
+
+
+{% block footer %}
+{{ super() }}
+{% endblock footer %}
