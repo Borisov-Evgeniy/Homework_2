@@ -20,7 +20,7 @@ def about():
 
 @app.route('/contacts')
 def contacts():
-    return render_template('contacts.html', title='Отзывы', menu=menu)
+    return render_template('contacts.html', title='Контакты', menu=menu)
 
 @app.route('/services')
 def services():
