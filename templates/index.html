@@ -1,12 +1,27 @@
 {% extends 'base.html' %}
 
-{% block title %}
-{{ super() }}
-{% endblock title %}
+<!--{% block title %}-->
+<!--{{ super() }}-->
+<!--{% endblock title %}-->
 
 {% block content %}
 {{ super() }}
-Содержимое главной страницы
+<h2>Список</h2>
+<ul>
+    {% for post in posts %}
+    <li>
+        <p class="title">{{ post.title }}</p>
+        <div class="announce">{{ post.text }}</div>
+    </li>
+    {% endfor %}
+</ul>
+<div class="container_wrap">
+    <div class="first_container">
+        <p> 4 + 1   </p>
+    </div>
+    <div class="second_container"> 1 </div>
+    <div class="third_container"> 2 </div>
+</div>
 {% endblock content %}
 
 {% block footer %}
