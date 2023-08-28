@@ -25,12 +25,12 @@ def create_db():
     db.close()
 
 
-menu = [{'name': 'Главная', 'url': 'index'},
-        {'name': 'О нас', 'url': 'about'},
-        {'name': 'Услуги', 'url': 'services'},
-        {'name': 'Наши врачи', 'url': 'doctors'},
-        {'name': 'Контакты', 'url': 'contacts'},
-        ]
+# menu = [{'name': 'Главная', 'url': 'index'},
+#         {'name': 'О нас', 'url': 'about'},
+#         {'name': 'Услуги', 'url': 'services'},
+#         {'name': 'Наши врачи', 'url': 'doctors'},
+#         {'name': 'Контакты', 'url': 'contacts'},
+#         ]
 
 
 @app.route('/index')
@@ -54,19 +54,34 @@ def about():
 def contacts():
     db = connect_db()
     dbase = DataBase(db)
-    if request.method == 'POST':
-        if len(request.form['username']) > 1:
-            flash('Сообщение отправлено успешно!', category='success')
-        else:
-            flash('Ошибка отправки', category='error')
 
-        context = {
-            'username': request.form['username'],
-            'email': request.form['email'],
-            'message': request.form['message'],
+    if request.method == 'POST':
+        if 'username' in request.form:
+            if len(request.form['username']) > 1:
+                flash('Сообщение отправлено успешно!', category='success')
+            else:
+                flash('Ошибка отправки', category='error')
+
+            context = {
+                'username': request.form['username'],
+                'email': request.form['email'],
+                'message': request.form['message'],
             }
-        return render_template('contacts.html', title='Контакты', menu=dbase.get_objects('mainmenu'), **context)
-    return render_template('contacts.html', title='Контакты', menu=dbase.get_objects('mainmenu'))
+            return render_template('contacts.html', title='Контакты', menu=dbase.get_objects('mainmenu'), **context,
+                                   posts=dbase.get_objects('posts'))
+
+        elif 'title' in request.form:
+            if len(request.form['title']) < 3 or len(request.form['text']) < 1:
+                flash('Ошибка добавления отзыва', category='error')
+            else:
+                res = dbase.add_post(request.form['title'], request.form['text'])
+                if res:
+                    flash('Отзыв добавлен успешно!', category='success')
+                else:
+                    flash('Ошибка добавления отзыва', category='error')
+
+    return render_template('contacts.html', title='Контакты', menu=dbase.get_objects('mainmenu'),
+                           posts=dbase.get_objects('posts'))
 
 
 @app.route('/services')
@@ -85,6 +100,12 @@ def doctors():
 @app.route('/profile/<username>')
 def profile(username):
     return f'Пользователь {username}'
+
+@app.errorhandler(404)
+def page_not_found(error):
+    db = connect_db()
+    dbase = DataBase(db)
+    return render_template('page404', title='Cтраница не найдена', menu=dbase.get_objects('mainmenu'))
 
 if __name__ == '__main__':
     create_db()

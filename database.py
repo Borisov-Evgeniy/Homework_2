@@ -1,4 +1,5 @@
 import sqlite3
+import time
 
 class DataBase:
     def __init__(self, db):
@@ -16,3 +17,13 @@ class DataBase:
             print('Ошибка чтения базы данных')
         return []
 
+    def add_post(self, title, text):
+        tm = str(time.time())
+        sql = 'INSERT INTO posts (title, text, time) VALUES (?, ?, ?)'
+        try:
+            self.__cur.execute(sql, (title, text, tm))
+            self.__db.commit()
+        except sqlite3.Error as e:
+            print('Ошибка добавление статьи в базу данных' + str(e))
+            return False
+        return True

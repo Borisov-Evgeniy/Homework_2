@@ -5,21 +5,16 @@
 <!--{% endblock title %}-->
 
 {% block content %}
-{{ super() }}
-<h2>Список</h2>
-<ul>
-    {% for post in posts %}
-    <li>
-        <p class="title">{{ post.title }}</p>
-        <div class="announce">{{ post.text }}</div>
-    </li>
-    {% endfor %}
-</ul>
+<!--{{ super() }}-->
+
 <div class="container_wrap">
     <div class="first_container">
         <p> 4 + 1   </p>
     </div>
-    <div class="second_container"> 1 </div>
+    <div class="second_container"> 1
+        <img src="/static/dog.png" alt="NO_IMAGE" class="img_dog">
+    </div>
+
     <div class="third_container"> 2 </div>
 </div>
 {% endblock content %}
