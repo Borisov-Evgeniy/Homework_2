@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ super() }}
+{% endblock title %}
+
+{% block content %}
+{{ super() }}
+<div class="white_container">
+    <form action="/login" method="post"></form>
+    <p>Имя: <input type="text" name="username" required></p>
+    <p>Пароль: <input type="text" name="password" required></p>
+    <p><input type="submit" value="Войти"></p>
+</div>
+{% endblock content %}
+
+{% block footer %}
+{{ super() }}
+{% endblock footer %}

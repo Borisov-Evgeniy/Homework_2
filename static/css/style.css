@@ -66,7 +66,7 @@ title{
 
 footer{
     max-width: 1240px;
-    margin: 0 auto;
+    margin: -8px -1px 0 -6px;
     padding: 0;
     box-sizing: border-box;
     transform: translate(5px, 10px);
@@ -176,4 +176,17 @@ textarea {
     border-radius: 15px;
     background-color: grey;
     resize: none;
+}
+
+.white_container{
+    background: white;
+    position: relative;
+    min-height: 600px;
+    display: flex;
+    flex-direction: column;
+    margin: -8px 0px -8px 0px;
+    padding: 10px;
+    border-radius: 15px;
+    text-align: center;
+
 }

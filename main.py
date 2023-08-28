@@ -1,6 +1,6 @@
 import sqlite3
 import os
-from flask import Flask, render_template, request, flash, url_for
+from flask import Flask, render_template, request, flash, url_for, abort, session, redirect
 from database import DataBase
 
 DATABASE = 'tmp/flsk.db'
@@ -74,7 +74,7 @@ def contacts():
             if len(request.form['title']) < 3 or len(request.form['text']) < 1:
                 flash('Ошибка добавления отзыва', category='error')
             else:
-                res = dbase.add_post(request.form['title'], request.form['text'])
+                res = dbase.add_post(request.form['title'], request.form['text'], request.form['url'])
                 if res:
                     flash('Отзыв добавлен успешно!', category='success')
                 else:
@@ -82,6 +82,19 @@ def contacts():
 
     return render_template('contacts.html', title='Контакты', menu=dbase.get_objects('mainmenu'),
                            posts=dbase.get_objects('posts'))
+
+
+@app.route('/post/<post_id>')
+def show_post(post_id):
+    db = connect_db()
+    dbase = DataBase(db)
+
+    title, post = dbase.get_post(post_id)
+    if not title:
+        abort(404)
+
+    return render_template('post.html', title=title, post=post, menu=dbase.get_objects('mainmenu'))
+
 
 
 @app.route('/services')
@@ -99,7 +112,21 @@ def doctors():
 
 @app.route('/profile/<username>')
 def profile(username):
+    if 'userLogged' not in session or session['userLogged'] != username:
+        abort(401)
     return f'Пользователь {username}'
+
+@app.route('/login', methods=['GET','POST'])
+def login():
+    db = connect_db()
+    dbase = DataBase(db)
+    if 'userLogged' in session:
+        return redirect(url_for('profile', username=session['userLogged']))
+    elif request.method == 'POST' and request.form['username'] == 'admin' \
+                                  and request.form['password'] == 'qwerty':
+        session['userLogged'] = request.form['username']
+        return redirect(url_for('profile', username=session['userLogged']))
+    return render_template('login.html', title='Авторизация', menu=dbase.get_objects('mainmenu'))
 
 @app.errorhandler(404)
 def page_not_found(error):

@@ -5,11 +5,15 @@
 {% endblock title %}
 
 {% block content %}
+
 {{ super() }}
+
 <h3 class="white_text" id="text_center">Форма обратной связи</h3>
+
 {% for cat,msg in get_flashed_messages(True) %}
 <div class="flash {{ cat }}">{{ msg }}</div>
 {% endfor %}
+
 <div class="form_wrap">
     <form id='contact_form_1' action="/contacts" method="post" class="form-contacts">
         <p class="white_text">Имя: <input id="1_input" type="text" name="username" required></p>
@@ -19,31 +23,40 @@
         <p class="white_text"><input type="submit" value="Отправить сообщение"></p>
     </form>
 </div>
+
 {% if username and email %}
 <p>Имя пользователя: {{ username }}</p>
 <p>Email: {{ email }}</p>
 <p>Сообщение: {{ message }}</p>
 {% endif %}
+
 <div class="form_reviews">
     <h2>Отзывы</h2>
     <ul>
         {% for post in posts %}
         <li>
             <p class="title">{{ post.title }}</p>
-            <div class="announce">{{ post.text }}</div>
+            <a href="{{ url_for('show_post', post_id=post.url) }}">{{ post.title }}</a>
+            <div class="announce">{{ post.text[:50] | striptags }}...</div>
         </li>
         {% endfor %}
     </ul>
-<!--    <img src="/static/dog_2.png" alt="NO_IMAGE" class="dog_2">-->
+    <!--    <img src="/static/dog_2.png" alt="NO_IMAGE" class="dog_2">-->
+
+    {% for cat,msg in get_flashed_messages(True) %}
+    <div class="flash {{ cat }}">{{ msg }}</div>
+    {% endfor %}
+
 
     <form action="/contacts" method="post" class="form-contact">
         <p>ФИО: <input type="text" name="title" required></p>
+        <p>URL: <input type="text" name="url" required></p>
         <p>Teкст отзыва: </p>
         <p><textarea name="text" cols="30" rows="10"></textarea></p>
         <p><input type="submit" value="Добавить отзыв"></p>
     </form>
 </div>
-<img src="/static/dog_2.png" alt="NO_IMAGE" class="dog_2">
+<img src="/static/images/dog_2.png" alt="NO_IMAGE" class="dog_2">
 {% endblock content %}
 
 

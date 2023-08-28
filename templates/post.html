@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ super() }}
+{% endblock title %}
+
+{% block content %}
+{{ super() }}
+<div class="white_container">
+    {{ post | safe }}
+</div>
+{% endblock content %}
+
+{% block footer %}
+{{ super() }}
+{% endblock footer %}
