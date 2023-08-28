@@ -105,7 +105,7 @@ def profile(username):
 def page_not_found(error):
     db = connect_db()
     dbase = DataBase(db)
-    return render_template('page404', title='Cтраница не найдена', menu=dbase.get_objects('mainmenu'))
+    return render_template('page404.html', title='Cтраница не найдена', menu=dbase.get_objects('mainmenu'))
 
 if __name__ == '__main__':
     create_db()
